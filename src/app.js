@@ -17,19 +17,11 @@ app.get("/repositories", (request, response) => {
 });
 
 app.post("/repositories", (request, response) => {
-  const {title, url, techs} = request.body;
+  const { title, url, techs } = request.body;
+  const project = { id: uuid(), title, url, techs, likes: 0 };
 
-  const repository = {
-    id: uuid(),
-    title,
-    url,
-    techs,
-    likes: 0
-  }
-
-  repositories.push(repository);
-
-  response.json(repository);
+  repositories.push(project);
+  return response.status(200).json(project);
 });
 
 app.put("/repositories/:id", (request, response) => {
@@ -81,6 +73,7 @@ app.post("/repositories/:id/like", (request, response) => {
   }
 
   const repositoryToBeUpdated = repositories[repositoryIndex];
+
   const likes = repositoryToBeUpdated.likes + 1;
 
   const updatedRepository = {
